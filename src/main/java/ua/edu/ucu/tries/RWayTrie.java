@@ -1,13 +1,6 @@
 package ua.edu.ucu.tries;
 
 import ua.edu.ucu.iterators.WordsIterator;
-import ua.edu.ucu.queue.Queue;
-import ua.edu.ucu.tries.TNode;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class RWayTrie implements Trie {
     private TNode root;
@@ -36,23 +29,11 @@ public class RWayTrie implements Trie {
 
     @Override
     public boolean delete(String word) {
-        if (!this.contains(word))
+        TNode node = this.getEndOfWord(word);
+        if (node == null)
             return false;
-        int deletedCol = word.length();
-        TNode node = this.root;
-        TNode lastFreeNode = this.root;
-        char subNodeValue = word.charAt(0);
-
-        for (int i = 0; i < word.length(); ++i) {
-            if (node.amountOfSubNodes() > 1) {
-                deletedCol--;
-                lastFreeNode = node;
-                subNodeValue = word.charAt(i);
-            }
-            node = node.getSubNode(word.charAt(i));
-        }
-        this.size -= deletedCol;
-        lastFreeNode.deleteSubNode(subNodeValue);
+        node.setWeight(0);
+        this.size--;
         return true;
     }
 

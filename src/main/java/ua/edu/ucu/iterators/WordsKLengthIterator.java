@@ -4,49 +4,53 @@ import java.util.Iterator;
 
 
 public class WordsKLengthIterator implements Iterator<String> {
-    private Iterator<String> iter;
+    private Iterator<String> itr;
     private int k;
     private String next;
-    private int sizes_num = 0;
-    private int max_size = -1;
+    private int colDiffSizes;
+    private int maxSize;
 
 
-    public WordsKLengthIterator(Iterator<String> iter, int k) {
+    public WordsKLengthIterator(Iterator<String> itr, int k) {
+        this.itr = itr;
         this.k = k;
-        this.iter = iter;
+        this.colDiffSizes = 0;
+        this.maxSize = 0;
         countNext();
     }
 
     private void countNext() {
-        next = iter.next();
-        if (!iter.hasNext() || (sizes_num == k && next.length() > max_size)) {
-            next = null;
+        this.next = itr.next();
+        // if there is no next element
+        if (!this.itr.hasNext()) {
+            this.next = null;
             return;
         }
-        if (next.length() > max_size) {
-            sizes_num++;
-            max_size = next.length();
+        // if already have k different sizes and next element has bigger
+        if (this.colDiffSizes == this.k && this.next.length() > this.maxSize){
+            this.next = null;
+            return;
         }
-    }
 
-    @Override
-    public boolean hasNext() {
-        return next != null;
+        if (this.next.length() > this.maxSize) {
+            this.colDiffSizes++;
+            this.maxSize = this.next.length();
+        }
     }
 
     @Override
     public String next() {
-        String tmp = next;
+        String tmp = this.next;
         countNext();
         return tmp;
     }
 
-    public static Iterable<String> words(Iterable<String> iter, int k) {
-        return new Iterable<String>() {
-            @Override
-            public Iterator<String> iterator() {
-                return new WordsKLengthIterator(iter.iterator(), k);
-            }
-        };
+    @Override
+    public boolean hasNext() {
+        return this.next != null;
+    }
+
+    public static Iterable<String> words(Iterable<String> itr, int k) {
+        return () -> new WordsKLengthIterator(itr.iterator(), k);
     }
 }

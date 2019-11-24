@@ -11,7 +11,7 @@ public class Node {
         this.next = next;
     }
 
-    Node(Object data) {
+    public Node(Object data) {
         this.data = data;
     }
 
@@ -25,7 +25,6 @@ public class Node {
 
     public void setNext(Node next) {
         this.next = next;
-
     }
 
     public Object getData() {

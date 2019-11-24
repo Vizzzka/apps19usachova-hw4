@@ -4,65 +4,60 @@ package ua.edu.ucu.tries;
 public class TNode {
     private char value;
     private TNode[] subNodes;
-    private int wordLength;
+    private int weight;
 
     public final int amountOfLetters = 26;
 
     public TNode() {
-        this.wordLength = 0;
+        this.weight = 0;
         this.subNodes = new TNode[this.amountOfLetters];
     }
 
-    public TNode(char value, int wordLength) {
-        this.wordLength = wordLength;
+    public TNode(char value, int weight) {
+        this.weight = weight;
         this.value = value;
         this.subNodes = new TNode[this.amountOfLetters];
-    }
-
-    public void setSubNode(char subValue, int wordLength) {
-        int index = this.charValueToIndex(subValue);
-        if (this.subNodes[index] == null)
-            this.subNodes[(int)subValue - (int)'a'] = new TNode(subValue, wordLength);
-    }
-
-    public TNode getSubNode(char subValue) {
-        int index = this.charValueToIndex(subValue);
-        return this.subNodes[index];
     }
 
     public TNode[] getSubNodes() {
         return this.subNodes.clone();
     }
 
-    private int charValueToIndex(char value) {
-        return (int)value - (int)'a';
-    }
-
     public char getValue() {
         return value;
     }
 
-    public void setValue(char value) {
-        this.value = value;
+    public void setValue(char value) { this.value = value;}
+
+    public int getWeight() {
+        return this.weight;
     }
 
-    public int getWordLength() {
-        return this.wordLength;
+    public void setWeight(int x) {
+        this.weight = x;
     }
 
-    public int amountOfSubNodes() {
-        int amount = 0;
-        for (TNode subNode : this.subNodes) {
-            if (subNode != null) {
-                amount++;
-            }
-        }
-        return amount;
+    public void setSubNode(char subValue, int wordLength) {
+        int index = this.charValueToIndex(subValue);
+        if (this.subNodes[index] == null)
+            this.subNodes[index] = new TNode(subValue, wordLength);
+        else
+            this.subNodes[index].weight = Math.max(this.subNodes[index].weight, wordLength);
     }
 
-    public void deleteSubNode(char value) {
-        int index = this.charValueToIndex(value);
-        this.subNodes[index] = null;
+    public TNode getSubNode(char subValue) {
+        int index = this.charValueToIndex(subValue);
+        if (checkIndex(index))
+            return this.subNodes[index];
+        return null;
+    }
+
+    private boolean checkIndex(int index) {
+        return index >= 0 && index < this.amountOfLetters;
+    }
+
+    private int charValueToIndex(char value) {
+        return (int)value - (int)'a';
     }
 
 }

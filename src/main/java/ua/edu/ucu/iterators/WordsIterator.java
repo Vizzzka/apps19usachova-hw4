@@ -1,7 +1,6 @@
 package ua.edu.ucu.iterators;
 
 import ua.edu.ucu.queue.Queue;
-import ua.edu.ucu.tries.RWayTrie;
 import ua.edu.ucu.tries.TNode;
 
 import java.util.Iterator;
@@ -29,7 +28,7 @@ public class WordsIterator implements Iterator<String> {
                     queue.enqueue(new Object[]{subNode, word + subNode.getValue()});
                 }
             }
-            if (node.getWordLength() != 0) {
+            if (node.getWeight() != 0) {
                 next = word;
                 return;
             }
