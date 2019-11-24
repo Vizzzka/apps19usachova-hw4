@@ -56,7 +56,8 @@ public class PrefixMatchesBigTest {
         pm.load("abcdefg abcdefgh");
         assertTrue(pm.contains("abcdefg"));
         pm.load("abc123!@$^*%^&*fed");
-        assertTrue(pm.contains("abcfed"));
+        assertTrue(pm.contains("abCfed"));
+        assertFalse(pm.contains("abc123!@$^*%^&*fed"));
         pm.load("a");
         assertFalse(pm.contains("a"));
     }

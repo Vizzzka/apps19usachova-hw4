@@ -34,8 +34,11 @@ public class PrefixMatches {
     public boolean contains(String word) {
         if (word.length() < 2)
             return false;
-        word = word.replaceAll("[^a-zA-Z\\s]", "").toLowerCase();
-        return this.trie.contains(word);
+        String newWord = word.replaceAll("[^a-zA-Z\\s]", "");
+        if (word.length() != newWord.length())
+            return false;
+        newWord = newWord.toLowerCase();
+        return this.trie.contains(newWord);
     }
 
     public boolean delete(String word) {
